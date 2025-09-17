@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预约签到</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+        }
+        body {
+            background-color: #ffffff;
+            color: #333;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-bar {
+            background-color: #f0f0f0;
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .main-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 5px;
+        }
+        .url {
+            font-size: 14px;
+            color: #666;
+        }
+        .red-title {
+            background-color: #ffffff;
+            color: #9d162d;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px 20px;
+            margin: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .date {
+            font-size: 28px;
+            font-weight: 500;
+            color: #019875;
+            margin-bottom: 8px;
+        }
+        .time {
+            font-size: 22px;
+            color: #019875;
+            margin-bottom: 30px;
+        }
+        .success-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #019875;
+            font-size: 18px;
+            margin-bottom: 35px;
+        }
+        .checkmark-circle {
+            width: 24px;
+            height: 24px;
+            background-color: #019875;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+        }
+        .checkmark {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .info-item {
+            margin-bottom: 16px;
+            font-size: 14px;
+            line-height: 1.4;
+            display: flex;
+            align-self: flex-start;
+        }
+        .info-label {
+            color: #666;
+            width: 70px;
+            flex-shrink: 0;
+        }
+        .info-content {
+            color: #333;
+            flex-grow: 1;
+        }
+        .user-info {
+            background-color: white;
+            padding: 15px;
+            margin: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .user-info .info-item {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        .user-info .info-label {
+            width: 60px;
+            margin-right: 4px;
+            color: #666;
+            flex-shrink: 0;
+        }
+        .user-info .info-content {
+            color: #333;
+            flex-grow: 1;
+        }
+        .button {
+            background-color: #9d162d;
+            color: white;
+            text-align: center;
+            padding: 14px;
+            border-radius: 6px;
+            margin: 20px auto;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            width: 160px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- 灰色顶部边栏 -->
+    
+    <!-- 红色标题 -->
+    <div class="red-title">预约签到</div>
+    
+    <!-- 主要内容卡片 -->
+    <div class="card">
+        <div class="date" id="current-date">2025-09-02</div>
+        <div class="time" id="current-time">19:11:51</div>
+        
+        <div class="success-container">
+            <div class="checkmark-circle">
+                <div class="checkmark">✓</div>
+            </div>
+            <div>签到成功</div>
+        </div>
+
+        <div class="info-item">
+            <span class="info-label">签到时间:</span>
+            <span class="info-content" id="dynamic-time">2025-09-02 19:11:51</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">预约资源:</span>
+            <span class="info-content">南校区健身房</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">预约时段:</span>
+            <span class="info-content">19:00-20:30</span>
+        </div>
+    </div>
+    
+    <!-- 用户信息（卡片外部） -->
+    <div class="user-info">
+        <div class="info-item">
+            <span class="info-label">姓名:</span>
+            <span class="info-content">李昌家</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">学工号:</span>
+            <span class="info-content">S2410W1003</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">部门:</span>
+            <span class="info-content">信息科学与工程学院(软件学院、国家保密学院)</span>
+        </div>
+    </div>
+    
+    <!-- 底部按钮 -->
+    <div class="button">查看我的预约</div>
+
+    <script>
+        // 更新时间函数[6,7,8](@ref)
+        function updateTime() {
+            const now = new Date();
+            
+            // 格式化日期为YYYY-MM-DD[6,8](@ref)
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const day = now.getDate().toString().padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
+            
+            // 格式化时间为HH:MM:SS[6,7](@ref)
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const formattedTime = `${hours}:${minutes}:${seconds}`;
+            
+            // 完整时间格式
+            const fullFormattedTime = `${formattedDate} ${formattedTime}`;
+            
+            // 更新页面上的时间显示[6,7](@ref)
+            document.getElementById('current-date').textContent = formattedDate;
+            document.getElementById('current-time').textContent = formattedTime;
+            document.getElementById('dynamic-time').textContent = fullFormattedTime;
+        }
+        
+        // 页面加载时立即更新时间[6,7](@ref)
+        updateTime();
+        
+        // 设置每秒更新一次时间[6,7](@ref)
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
+
